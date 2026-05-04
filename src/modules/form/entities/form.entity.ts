@@ -1,4 +1,4 @@
-import { Field } from '../../field/entities/field.entity';
+import { Field } from './field.entity';
 import { Submission } from '../../submission/entities/submission.entity';
 import { User } from '../../user/entities/user.entity';
 import {
@@ -9,8 +9,10 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  Unique,
 } from 'typeorm';
 
+@Unique(['creator', 'order'])
 @Entity('forms')
 export class Form {
   @PrimaryGeneratedColumn()
@@ -19,7 +21,7 @@ export class Form {
   @Column({ unique: true, name: 'form_title' })
   title: string;
 
-  @Column({ unique: true, name: 'form_description' })
+  @Column({ name: 'form_description' })
   description: string;
 
   @Column({ name: 'form_order' })

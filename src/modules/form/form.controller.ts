@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { FormService } from './form.service';
-import { CreateFormDto } from './form.dto';
+import { CreateFormDto } from './dtos/form.dto';
+import { CreateFieldDto } from './dtos/field.dto';
 
 @ApiTags('Forms')
 @Controller('api/forms')
@@ -32,6 +33,21 @@ export class FormController {
   @Delete(':formId')
   async deleteForm(@Param('formId') formId: number) {
     return this.formService.deleteForm(formId);
+  }
+
+  @Post(':formId/fields')
+  async addFieldToForm(@Param('formId') formId: number, @Body() createFieldDto: CreateFieldDto) {
+    return this.formService.addFieldToForm(formId, createFieldDto);
+  }
+
+  @Put(':formId/fields/:fieldId')
+  async updateField(@Param('fieldId') fieldId: number, @Body() updateFieldDto: CreateFieldDto) {
+    return this.formService.updateField(fieldId, updateFieldDto);
+  }
+
+  @Delete(':formId/fields/:fieldId')
+  async deleteField(@Param('fieldId') fieldId: number) {
+    return this.formService.deleteField(fieldId);
   }
 
 }
