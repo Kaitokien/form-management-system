@@ -5,7 +5,7 @@ import { CreateFormDto } from './dtos/form.dto';
 import { CreateFieldDto } from './dtos/field.dto';
 
 @ApiTags('Forms')
-@Controller('api/forms')
+@Controller('forms')
 export class FormController {
   constructor(private readonly formService: FormService) {}
 
