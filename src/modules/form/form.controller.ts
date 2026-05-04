@@ -41,8 +41,8 @@ export class FormController {
   }
 
   @Put(':formId/fields/:fieldId')
-  async updateField(@Param('fieldId') fieldId: number, @Body() updateFieldDto: CreateFieldDto) {
-    return this.formService.updateField(fieldId, updateFieldDto);
+  async updateField(@Param('fieldId') fieldId: number, @Param('formId') formId: number, @Body() updateFieldDto: CreateFieldDto) {
+    return this.formService.updateField(fieldId, formId, updateFieldDto);
   }
 
   @Delete(':formId/fields/:fieldId')

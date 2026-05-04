@@ -23,7 +23,17 @@ export class FormService {
       );
     }
 
-    // Check if the order
+    // Check if the order already exists
+    const existingFormOrder = await this.fieldRepository.findOne({
+      where: { order: newForm.order },
+    });
+    if (existingFormOrder) {
+      return {
+        statusCode: 400,
+        message: 'A field with this order already exists in this form.',
+      };
+    }
+
     return this.formRepository.save(newForm);
   }
 
@@ -53,14 +63,21 @@ export class FormService {
         'Form not found. This form is either deleted or does not exist.',
       );
     }
+    const existingFormOrder = await this.fieldRepository.findOne({
+      where: { order: updateFormDto.order },
+    });
+    if (existingFormOrder && existingFormOrder?.order !== form.order) {
+      return {
+        statusCode: 400,
+        message: 'A field with this order already exists in this form.',
+      };
+    }
     this.formRepository.merge(form, updateFormDto);
     return this.formRepository.save(form);
   }
 
   async deleteForm(formId: number) {
-    const form = await this.formRepository.findOne({
-      where: { form_id: formId },
-    });
+    const form = await this.getFormById(formId);
     if (!form) {
       throw new Error(
         'Form not found. This form is either deleted or does not exist.',
@@ -112,15 +129,27 @@ export class FormService {
     };
   }
 
-  async updateField(fieldId: number, updateFieldDto: CreateFieldDto) {
+  async updateField(fieldId: number, formId: number, updateFieldDto: CreateFieldDto) {
     const field = await this.fieldRepository.findOne({
       where: { field_id: fieldId },
     });
+
     if (!field) {
       throw new Error(
         'Field not found. This field is either deleted or does not exist.',
       );
     }
+
+    const existingFieldOrder = await this.fieldRepository.findOne({
+      where: { order: updateFieldDto.order, form: { form_id: formId } },
+    });
+    if (existingFieldOrder && existingFieldOrder?.order !== field.order) {
+      return {
+        statusCode: 400,
+        message: 'A field with this order already exists in this form.',
+      };
+    }
+
     this.fieldRepository.merge(field, updateFieldDto);
     return this.fieldRepository.save(field);
   }
