@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { FormModule } from './modules/form/form.module';
-import { SubmissionModule } from './modules/submission/submission.module';
+import { SubmissionModule } from './modules/form/submission/submission.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

@@ -166,4 +166,11 @@ export class FormService {
     field.deletedAt = new Date();
     return this.fieldRepository.save(field);
   }
+
+  async getActiveForms() {
+    return await this.formRepository.find({
+      where: { status: 'active' },
+      order: { order: 'ASC' },
+    });
+  }
 }

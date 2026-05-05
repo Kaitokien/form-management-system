@@ -1,12 +1,6 @@
 import { Form } from '../../form/entities/form.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { SubmissionValue } from '../submission/entities/submission_value.entity';
 
 @Entity('fields')
 export class Field {
@@ -39,4 +33,7 @@ export class Field {
 
   @ManyToOne(() => Form, (form) => form.fields, { onDelete: 'CASCADE' })
   form: Form;
+
+  @OneToMany(() => SubmissionValue, (submissionValue) => submissionValue.field)
+  submissionValues: SubmissionValue[];
 }

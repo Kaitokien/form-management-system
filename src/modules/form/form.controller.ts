@@ -1,13 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { FormService } from './form.service';
 import { CreateFormDto } from './dtos/form.dto';
 import { CreateFieldDto } from './dtos/field.dto';
+import { SubmissionDto } from './dtos/submission.dto';
+import { SubmissionService } from './submission/submission.service';
 
 @ApiTags('Forms')
 @Controller('forms')
 export class FormController {
-  constructor(private readonly formService: FormService) {}
+  constructor(private readonly formService: FormService, private readonly submissionService: SubmissionService) {}
 
   @Get()
   async getForms() {
@@ -20,7 +22,7 @@ export class FormController {
     return this.formService.createForm(createFormDto);
   }
 
-  @Post(':formId')
+  @Get(':formId')
   async getFormById(@Param('formId') formId: number) {
     return this.formService.getFormById(formId);
   }
@@ -48,6 +50,17 @@ export class FormController {
   @Delete(':formId/fields/:fieldId')
   async deleteField(@Param('fieldId') fieldId: number) {
     return this.formService.deleteField(fieldId);
+  }
+
+  // Employee can view these APIs
+  @Get('/active')
+  async getActiveForms() {
+    return this.formService.getActiveForms();
+  }
+
+  @Post(':formId/submit')
+  async submitForm(@Param('formId') formId: number, @Body() submissionDto: SubmissionDto) {
+    return this.submissionService.submitForm(formId, 8, submissionDto);
   }
 
 }

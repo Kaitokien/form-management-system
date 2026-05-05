@@ -1,5 +1,5 @@
 import { Field } from './field.entity';
-import { Submission } from '../../submission/entities/submission.entity';
+import { Submission } from '../submission/entities/submission.entity';
 import { User } from '../../user/entities/user.entity';
 import {
   Entity,

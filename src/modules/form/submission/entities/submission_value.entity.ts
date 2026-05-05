@@ -7,14 +7,12 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Submission } from './submission.entity';
+import { Field } from '../../entities/field.entity';
 
 @Entity('submission_values')
 export class SubmissionValue {
   @PrimaryGeneratedColumn()
   subVal_id: number;
-
-  @Column({ name: 'subVal_id_form' })
-  formId: number;
 
   @Column({ name: 'subVal_value' })
   value: string;
@@ -27,4 +25,7 @@ export class SubmissionValue {
 
   @ManyToOne(() => Submission, (submission) => submission.submissionValues, { onDelete: 'CASCADE' })
   submission: Submission;
+
+  @ManyToOne(() => Field, (field) => field.submissionValues, { onDelete: 'CASCADE' })
+  field: Field;
 }
